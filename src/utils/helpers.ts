@@ -1,3 +1,5 @@
+import { ZodSchema } from 'zod';
+
 export function isoToCron(isoString: string): string {
   const date = new Date(isoString);
 
@@ -16,4 +18,32 @@ export function isoToCron(isoString: string): string {
   return second === 0
     ? `${minute} ${hour} ${dayOfMonth} ${month} ${dayOfWeek}`
     : `${second} ${minute} ${hour} ${dayOfMonth} ${month} ${dayOfWeek}`;
+}
+
+
+
+
+interface ValidationResult<T> {
+  success: boolean;
+  data?: T;
+  errors?: { path: string; message: string }[];
+}
+
+export function zodValidate<T>(payload: unknown, schema: ZodSchema<T>): ValidationResult<T> {
+  const result = schema.safeParse(payload);
+
+  if (result.success) {
+    return {
+      success: true,
+      data: result.data,
+    };
+  }
+
+  return {
+    success: false,
+    errors: result.error.issues.map(issue => ({
+      path: issue.path.join('.'),
+      message: issue.message,
+    })),
+  };
 }

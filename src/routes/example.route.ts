@@ -21,6 +21,8 @@ const router = Router();
  */
 router.get('/', exampleController.get);
 
+router.post('/', exampleController.get);
+
 
 
 export default router;

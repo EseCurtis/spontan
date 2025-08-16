@@ -19,7 +19,7 @@ const router = Router();
  *               items:
  *                 $ref: '#/components/schemas/example'
  */
-router.get('/', schedulerController.schedule);
+router.post('/', schedulerController.schedule);
 
 
 
