@@ -17,6 +17,7 @@ import { notFound } from './middleware/not-found';
 
 // Import configurations
 import { swaggerSpec } from './config/swagger';
+import { startupWorkers } from './config/startup-workers';
 
 // Load environment variables
 dotenv.config();
@@ -51,11 +52,14 @@ app.use(notFound);
 // Error handler
 app.use(errorHandler);
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`🚀 Server is running on port ${PORT}`);
-  console.log(`📚 API Documentation available at http://localhost:${PORT}/api-docs`);
-  console.log(`🏥 Health check available at http://localhost:${PORT}/health`);
-});
+
+startupWorkers(() => {
+  // Start server
+  app.listen(PORT, () => {
+    console.log(`🚀 Server is running on port ${PORT}`);
+    console.log(`📚 API Documentation available at http://localhost:${PORT}/api-docs`);
+    console.log(`🏥 Health check available at http://localhost:${PORT}/health`);
+  });
+})
 
 export default app; 

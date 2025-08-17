@@ -13,3 +13,21 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum JOB_STATUS {
+  PENDING
+  RAN
+  COMPLETED
+  CANCELLED
+}
+
+model cron_job {
+  uuid         String     @id @unique @default(uuid())
+  rule         Json
+  request      Json
+  callback_url String?
+  job_name     String
+  status       JOB_STATUS @default(PENDING)
+  createdAt    DateTime   @default(now()) @map("created_at")
+  updatedAt    DateTime   @updatedAt @map("updated_at")
+}
