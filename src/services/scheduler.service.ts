@@ -1,8 +1,8 @@
 import prisma from "@/config/database";
 import { JOB_STATUS } from "@/generated/prisma";
+import { cancelScheduleSchema, scheduleSchema } from "@/schemas/scheduler.schema";
 import { ndSheduler } from "@/utils/shared";
 import axios from "axios";
-import z from "zod";
 
 type SchedulePayload = {
   rule: ndSheduler.RecurrenceRule;
@@ -14,40 +14,6 @@ type SchedulePayload = {
   };
   callbackUrl?: string;
 };
-
-// Zod schema for validation
-const scheduleSchema = z.object({
-  rule: z.object({
-    recurs: z.boolean(),
-    year: z.number().nullable(),
-    month: z.number().nullable(),
-    date: z.number().nullable(),
-    dayOfWeek: z.array(
-      z.union([
-        z.number(),
-        z.object({
-          start: z.number(),
-          end: z.number(),
-          step: z.number().optional(), // Step is optional in Range
-        }),
-      ])
-    ).nullable(),
-    hour: z.number(),
-    minute: z.number(),
-    second: z.number(),
-  }),
-  request: z.object({
-    method: z.enum(['GET', 'POST', 'PUT', 'PATCH', 'DELETE']),
-    url: z.string().url(), // Enforce valid URL format
-    data: z.unknown().optional(),
-    headers: z.record(z.string(), z.string()).optional(),
-  }),
-  callbackUrl: z.string().url().optional(), // Enforce valid URL if provided
-});
-
-const cancelScheduleSchema = z.object({
-  job_name_or_persistUuid: z.string().optional(),
-});
 
 export const schedulerService = {
   async persistJob({ rule, request, callbackUrl }: SchedulePayload, jobName: string) {
@@ -92,7 +58,9 @@ export const schedulerService = {
     rule.hour = payload.rule.hour
     rule.minute = payload.rule.minute
     rule.second = payload.rule.second
-    payload.rule = rule
+    payload.rule = rule;
+
+    const isReoccurence = !(typeof payload.rule === "string")
 
     const job = ndSheduler.scheduleJob(payload.rule, async () => {
       const { request } = payload;
@@ -119,7 +87,7 @@ export const schedulerService = {
         this.updateJob({
           name: job?.name,
           payload: {
-            status: JOB_STATUS.RAN
+            status: isReoccurence ? JOB_STATUS.RAN : JOB_STATUS.COMPLETED
           }
         })
       })
@@ -213,11 +181,7 @@ export const schedulerService = {
 
           await schedulerService.schedule(payload, false)
         }));
-
-
       console.log(`Restored (${restored.length}) jobs`);
-
-
     },
     async clearSchedules() {
       const deleted = await prisma.cron_job.deleteMany({
@@ -228,9 +192,6 @@ export const schedulerService = {
           ]
         }
       });
-
-
-
       console.log(`Deleted (${deleted.count}) jobs`);
     }
   },
