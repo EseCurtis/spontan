@@ -6,9 +6,6 @@ import morgan from 'morgan';
 import swaggerUi from 'swagger-ui-express';
 
 // Import routes
-
-import exampleRoute from './routes/example.route';
-
 import schedulerRoute from './routes/scheduler.route';
 
 // Import middleware
@@ -42,7 +39,6 @@ app.get('/health', (req, res) => {
 });
 
 // API routes
-app.use('/api/example', exampleRoute);
 app.use('/api/scheduler', schedulerRoute);
 
 
@@ -51,7 +47,6 @@ app.use(notFound);
 
 // Error handler
 app.use(errorHandler);
-
 
 startupWorkers(() => {
   // Start server
