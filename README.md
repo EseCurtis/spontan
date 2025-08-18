@@ -1,128 +1,56 @@
-# SpringAA API
+# Spontaneous: A Serverless Request Scheduling Service
 
-A TypeScript REST API with Prisma, Express, and Swagger documentation.
+## Overview
 
-## 🚀 Quick Start
+Spontaneous is an open-source, serverless request scheduling service built using TypeScript, Express, and Prisma. It provides a scalable and maintainable solution for scheduling requests to external APIs, allowing developers to focus on building their applications without worrying about the underlying infrastructure.
 
-```bash
-# Install dependencies
-npm install
+## Features
 
-# Start development server
-npm run dev
+* **Serverless Architecture**: Spontaneous is built using a serverless architecture, ensuring scalability and cost-effectiveness.
+* **Request Scheduling**: Schedule requests to external APIs with ease, using a simple and intuitive API.
+* **Prisma-powered Database**: Leverage the power of Prisma to manage your database, ensuring data consistency and integrity.
+* **TypeScript**: Built using TypeScript, ensuring maintainability and scalability.
+* **Express.js**: Utilizes Express.js for building the API, providing a flexible and modular framework.
 
-# Build for production
-npm run build
+## Getting Started
 
-# Start production server
-npm start
-```
+1. Clone the repository: `git clone https://github.com/your-username/spontaneous.git`
+2. Install dependencies: `npm install` or `yarn install`
+3. Start the development server: `npm run dev` or `yarn dev`
+4. Access the API: `http://localhost:3000`
 
-## 📁 Project Structure
+## API Documentation
 
-```
-src/
-├── config/          # Database and Swagger configs
-├── controllers/     # API controllers with CRUD operations
-├── middleware/      # Error handling and 404 middleware
-├── routes/          # API route definitions with Swagger docs
-├── services/        # Business logic layer with Prisma
-├── types/           # TypeScript interfaces and Swagger schemas
-├── utils/           # Utility functions for API responses
-└── index.ts         # Main application entry point
-```
+The Spontaneous API is documented using Swagger. You can access the API documentation by visiting `http://localhost:3000/api-docs`.
 
-## 🔧 Path Aliases
+### Endpoints
 
-The project is configured with TypeScript path aliases for cleaner imports:
+* **POST /schedule**: Schedule a request to an external API.
+* **GET /schedule**: Retrieve a list of scheduled requests.
+* **DELETE /schedule/:id**: Cancel a scheduled request.
 
-- `@/*` → `src/*`
-- `@/generated/*` → `generated/*`
+### Request Body
 
-**Note**: Path aliases work in the build process but require additional setup for development with ts-node. For now, use relative imports in development.
+* **method**: The HTTP method to use for the request (e.g., GET, POST, PUT, DELETE).
+* **url**: The URL of the external API to request.
+* **data**: Optional data to send with the request.
+* **headers**: Optional headers to send with the request.
 
-### Development (Relative Imports)
-```typescript
-import { userController } from '../controllers/userController';
-import { userService } from '../services/userService';
-```
+### Response
 
-### Production Build (Path Aliases)
-```typescript
-import { userController } from '@/controllers/userController';
-import { userService } from '@/services/userService';
-```
+* **id**: The ID of the scheduled request.
+* **status**: The status of the scheduled request (e.g., pending, completed, failed).
 
-## 🛠️ Available Scripts
+## Contributing
 
-- `npm run dev` - Start development server with hot reload
-- `npm run build` - Build production version
-- `npm start` - Start production server
-- `npm run lint` - Run ESLint
-- `npm run format` - Format code with Prettier
-- `npm run type-check` - Check TypeScript types
-- `npm run db:generate` - Generate Prisma client
-- `npm run db:push` - Push schema to database
-- `npm run db:migrate` - Run database migrations
-- `npm run db:studio` - Open Prisma Studio
+Spontaneous is an open-source project, and we welcome contributions from the community. If you're interested in contributing, please fork the repository and submit a pull request.
 
-## 🌐 API Endpoints
+## License
 
-- **Health Check**: `GET /health`
-- **API Documentation**: `GET /api-docs`
-- **Users**: `GET/POST/PUT/DELETE /api/users`
-- **Posts**: `GET/POST/PUT/DELETE /api/posts`
-- **Comments**: `GET/POST/PUT/DELETE /api/comments`
+Spontaneous is licensed under the ISC License.
 
-## 🗄️ Database
+## Acknowledgments
 
-The project uses PostgreSQL with Prisma ORM. Update the `.env` file with your database connection string:
-
-```env
-DATABASE_URL="postgresql://username:password@localhost:5432/springaa_db?schema=public"
-```
-
-## 🔒 Environment Variables
-
-Create a `.env` file based on `.env.example`:
-
-```env
-# Database Configuration
-DATABASE_URL="postgresql://username:password@localhost:5432/springaa_db?schema=public"
-
-# Server Configuration
-PORT=3001
-NODE_ENV=development
-
-# JWT Configuration (for future authentication)
-JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
-JWT_EXPIRES_IN=7d
-```
-
-## 🧪 Quality Assurance
-
-The project includes:
-
-- **ESLint** - Code linting with TypeScript support
-- **Prettier** - Code formatting
-- **Husky** - Git hooks for pre-commit checks
-- **Commitlint** - Conventional commit message validation
-- **TypeScript** - Type safety and compilation
-
-## 📚 API Documentation
-
-Visit `http://localhost:3001/api-docs` for interactive API documentation powered by Swagger.
-
-## 🚀 Deployment
-
-1. Set up your database and update the `DATABASE_URL`
-2. Run `npm run build` to compile TypeScript
-3. Run `npm start` to start the production server
-4. The server will be available on the configured port (default: 3001)
-
-## 🤝 Contributing
-
-1. Follow the conventional commit format
-2. Run `npm run lint` and `npm run format` before committing
-3. Ensure all tests pass
-4. Update documentation as needed 
+* Prisma: For providing an amazing ORM solution.
+* Express.js: For providing a flexible and modular framework.
+* TypeScript: For providing a maintainable and scalable language.
