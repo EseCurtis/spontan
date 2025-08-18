@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
-    "dev": "npx tsx watch src/index.ts",
+    "dev": "tsx watch src/index.ts",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
     "db:migrate": "prisma migrate dev",
@@ -41,6 +41,7 @@
     "morgan": "^1.10.1",
     "node-schedule": "^2.1.1",
     "prisma": "^6.14.0",
+    "tsx": "^4.20.4",
     "uuid": "^11.1.0",
     "zod": "^4.0.17"
   },
