@@ -4,7 +4,7 @@
   "description": "Web service for serverless solution to request scheduling ",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && npx ts-add-js-extension --dir=dist && resolve-tspaths",
     "start": "node dist/index.js",
     "dev": "tsx watch src/index.ts",
     "db:generate": "prisma generate",
@@ -57,6 +57,7 @@
     "@types/swagger-ui-express": "^4.1.8",
     "@typescript-eslint/eslint-plugin": "^8.39.1",
     "@typescript-eslint/parser": "^8.39.1",
+    "esbuild": "^0.25.9",
     "eslint": "^9.33.0",
     "eslint-config-prettier": "^10.1.8",
     "husky": "^9.1.7",
@@ -64,8 +65,10 @@
     "module-alias": "^2.2.3",
     "nodemon": "^3.1.10",
     "prettier": "^3.6.2",
+    "resolve-tspaths": "^0.8.23",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
+    "ts-add-js-extension": "^1.6.6",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.9.2"

@@ -41,7 +41,7 @@ export function zodValidate<T>(payload: unknown, schema: ZodSchema<T>): Validati
 
   return {
     success: false,
-    errors: result.error.issues.map(issue => ({
+    errors: result.error.issues.map((issue: any) => ({
       path: issue.path.join('.'),
       message: issue.message,
     })),

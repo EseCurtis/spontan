@@ -41,5 +41,5 @@
   "ts-node": {
     "esm": true,
     "require": ["tsconfig-paths/register"]
-  }
+  },
 } 
