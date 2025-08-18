@@ -1,7 +1,7 @@
 {
   "name": "sponntaneous",
   "version": "1.0.0",
-  "description": "A TypeScript REST API with Prisma, Express, and Swagger documentation",
+  "description": "Web service for serverless solution to request scheduling ",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
