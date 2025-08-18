@@ -4,7 +4,7 @@
   "description": "Web service for serverless solution to request scheduling ",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc && npx ts-add-js-extension --dir=dist && resolve-tspaths",
+    "build": "prisma db push && tsc && npx ts-add-js-extension --dir=dist && resolve-tspaths",
     "start": "node dist/index.js",
     "dev": "tsx watch src/index.ts",
     "db:generate": "prisma generate",
