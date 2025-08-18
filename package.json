@@ -1,5 +1,5 @@
 {
-  "name": "springaa.sh",
+  "name": "sponntaneous",
   "version": "1.0.0",
   "description": "A TypeScript REST API with Prisma, Express, and Swagger documentation",
   "main": "dist/index.js",
