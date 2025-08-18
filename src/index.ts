@@ -41,6 +41,12 @@ app.get('/health', (req, res) => {
 // API routes
 app.use('/api/scheduler', schedulerRoute);
 
+// API routes
+app.post('/api/cb', (req, res) => {
+  // console.log("LOGGER=>", req.body)
+  res.status(200).json({ status: 'OK', timestamp: new Date().toISOString() });
+});
+
 
 // 404 handler
 app.use(notFound);

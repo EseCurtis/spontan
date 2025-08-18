@@ -3,6 +3,7 @@ import { JOB_STATUS } from "@/generated/prisma";
 import { cancelScheduleSchema, scheduleSchema } from "@/schemas/scheduler.schema";
 import { ndSheduler } from "@/utils/shared";
 import axios from "axios";
+import { v4 } from "uuid";
 
 type SchedulePayload = {
   rule: ndSheduler.RecurrenceRule;
@@ -14,6 +15,13 @@ type SchedulePayload = {
   };
   callbackUrl?: string;
 };
+
+
+enum SchedulerCallbackEvents {
+  success = 'spota.success',
+  error = 'spota.error',
+  finally = 'spota.finally',
+}
 
 export const schedulerService = {
   async persistJob({ rule, request, callbackUrl }: SchedulePayload, jobName: string) {
@@ -50,6 +58,7 @@ export const schedulerService = {
   },
 
   async schedule(payload: SchedulePayload, persist: boolean = true) {
+    const jobName = `<Job-${v4()}>`;
     const rule = new ndSheduler.RecurrenceRule()
     rule.year = payload.rule.year
     rule.month = payload.rule.month
@@ -58,11 +67,16 @@ export const schedulerService = {
     rule.hour = payload.rule.hour
     rule.minute = payload.rule.minute
     rule.second = payload.rule.second
+    rule.tz = payload.rule.tz
     payload.rule = rule;
+
 
     const isReoccurence = !(typeof payload.rule === "string")
 
-    const job = ndSheduler.scheduleJob(payload.rule, async () => {
+
+
+    const job = ndSheduler.scheduleJob(jobName, payload.rule, async (executedAt) => {
+      console.log(`${jobName} [RUNNING]`);
       const { request } = payload;
       axios({
         method: request.method,
@@ -73,16 +87,26 @@ export const schedulerService = {
         if (payload.callbackUrl) {
           axios.post(payload.callbackUrl, {
             status: response.status,
-            data: response.data
+            event: SchedulerCallbackEvents.success,
+            executedAt,
+            data: {
+              response: response.data
+            }
           })
         }
       }).catch(error => {
         if (payload.callbackUrl) {
           axios.post(payload.callbackUrl, {
             status: error.response.status,
-            data: error.response.data
+            event: SchedulerCallbackEvents.error,
+            executedAt,
+            data: {
+              response: error.response.data,
+            }
           })
         }
+
+        console.error(`${jobName} [FAILED]`, error);
       }).finally(() => {
         this.updateJob({
           name: job?.name,
@@ -90,18 +114,29 @@ export const schedulerService = {
             status: isReoccurence ? JOB_STATUS.RAN : JOB_STATUS.COMPLETED
           }
         })
+
+        if (payload.callbackUrl) {
+          axios.post(payload.callbackUrl, {
+            status: 300,
+            event: SchedulerCallbackEvents.success,
+          })
+        }
+
+        console.log(`Job ${jobName} [COMPLETED]`);
       })
     });
 
     let persistUuid: string | null = null
+
+
     if (persist) {
-      const persisted = await this.persistJob(payload, job?.name)
+      const persisted = await this.persistJob(payload, job?.name || jobName)
       persistUuid = persisted.uuid
     }
 
     return {
       message: "JOB SCHEDULED!",
-      jobName: job?.name,
+      jobName: job?.name || jobName,
       persistUuid: persistUuid
     };
   },

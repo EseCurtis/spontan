@@ -11,6 +11,8 @@ export const schedulerController = {
     try {
       const { data: payload, errors } = zodValidate(req.body, schedulerService.schemas.schedule);
 
+      console.log("LOGGER=>", req.body)
+
       if (payload) {
         const data = await schedulerService.schedule(payload as any);
         res.status(200).json({
@@ -20,6 +22,7 @@ export const schedulerController = {
       }
 
       if (errors) {
+        console.log("ERROr", errors)
         res.status(500).json({
           success: false,
           errors
