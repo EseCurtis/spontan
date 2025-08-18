@@ -58,7 +58,7 @@ export const schedulerService = {
   },
 
   async schedule(payload: SchedulePayload, persist: boolean = true) {
-    const jobName = `<Job-${v4()}>`;
+    const jobName = `jn-${v4()}`;
     const rule = new ndSheduler.RecurrenceRule()
     rule.year = payload.rule.year
     rule.month = payload.rule.month
@@ -87,22 +87,28 @@ export const schedulerService = {
         if (payload.callbackUrl) {
           axios.post(payload.callbackUrl, {
             status: response.status,
-            event: SchedulerCallbackEvents.success,
-            executedAt,
             data: {
               response: response.data
-            }
+            },
+            _metadata: {
+              event: SchedulerCallbackEvents.success,
+              executedAt,
+              jobName,
+            },
           })
         }
       }).catch(error => {
         if (payload.callbackUrl) {
           axios.post(payload.callbackUrl, {
             status: error.response.status,
-            event: SchedulerCallbackEvents.error,
-            executedAt,
             data: {
               response: error.response.data,
-            }
+            },
+            _metadata: {
+              event: SchedulerCallbackEvents.error,
+              executedAt,
+              jobName,
+            },
           })
         }
 
@@ -118,7 +124,11 @@ export const schedulerService = {
         if (payload.callbackUrl) {
           axios.post(payload.callbackUrl, {
             status: 300,
-            event: SchedulerCallbackEvents.success,
+            _metadata: {
+              event: SchedulerCallbackEvents.finally,
+              executedAt,
+              jobName,
+            },
           })
         }
 
