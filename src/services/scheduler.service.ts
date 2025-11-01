@@ -219,7 +219,8 @@ export const schedulerService = {
           const payload = {
             rule,
             request,
-            callbackUrl: job.callback_url
+            callbackUrl: job.callback_url,
+            jobName: job.job_name
           } as SchedulePayload
 
           await schedulerService.schedule(payload, false)
