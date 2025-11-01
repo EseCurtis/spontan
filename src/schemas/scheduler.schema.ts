@@ -29,6 +29,7 @@ export const scheduleSchema = z.object({
     headers: z.record(z.string(), z.string()).optional(),
   }),
   callbackUrl: z.string().url().optional(), // Enforce valid URL if provided
+  jobName: z.string()
 });
 
 export const cancelScheduleSchema = z.object({

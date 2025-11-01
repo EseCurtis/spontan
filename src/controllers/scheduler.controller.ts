@@ -11,7 +11,7 @@ export const schedulerController = {
     try {
       const { data: payload, errors } = zodValidate(req.body, schedulerService.schemas.schedule);
 
-      console.log("LOGGER=>", req.body)
+      console.log("LOGGER=>", payload)
 
       if (payload) {
         const data = await schedulerService.schedule(payload as any);

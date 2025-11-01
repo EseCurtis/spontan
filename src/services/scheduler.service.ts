@@ -14,6 +14,7 @@ type SchedulePayload = {
     headers?: Record<string, string>;
   };
   callbackUrl?: string;
+  jobName?: string
 };
 
 
@@ -58,7 +59,7 @@ export const schedulerService = {
   },
 
   async schedule(payload: SchedulePayload, persist: boolean = true) {
-    const jobName = `jn-${v4()}`;
+    const jobName = payload?.jobName || `jn-${v4()}`;
     const rule = new ndSheduler.RecurrenceRule()
     rule.year = payload.rule.year
     rule.month = payload.rule.month
@@ -70,10 +71,7 @@ export const schedulerService = {
     rule.tz = payload.rule.tz
     payload.rule = rule;
 
-
     const isReoccurence = !(typeof payload.rule === "string")
-
-
 
     const job = ndSheduler.scheduleJob(jobName, payload.rule, async (executedAt) => {
       console.log(`${jobName} [RUNNING]`);
