@@ -1,8 +1,8 @@
-# Spontaneous: A Serverless Request Scheduling Service
+# Sponntaneous: A Serverless Request Scheduling Service
 
 ## Overview
 
-Spontaneous is an open-source, serverless request scheduling service built using TypeScript, Express, and Prisma. It provides a scalable and maintainable solution for scheduling requests to external APIs, allowing developers to focus on building their applications without worrying about the underlying infrastructure.
+Sponntaneous is an open-source, serverless request scheduling service built using TypeScript, Express, and Prisma. It provides a scalable and maintainable solution for scheduling requests to external APIs, allowing developers to focus on building their applications without worrying about the underlying infrastructure.
 
 ## Features
 
@@ -21,7 +21,7 @@ Spontaneous is an open-source, serverless request scheduling service built using
 
 ## API Documentation
 
-The Spontaneous API is documented using Swagger. You can access the API documentation by visiting `http://localhost:3000/api-docs`.
+The Sponntaneous API is documented using Swagger. You can access the API documentation by visiting `http://localhost:3000/api-docs`.
 
 ### Endpoints
 
@@ -43,11 +43,11 @@ The Spontaneous API is documented using Swagger. You can access the API document
 
 ## Contributing
 
-Spontaneous is an open-source project, and we welcome contributions from the community. If you're interested in contributing, please fork the repository and submit a pull request.
+Sponntaneous is an open-source project, and we welcome contributions from the community. If you're interested in contributing, please fork the repository and submit a pull request.
 
 ## License
 
-Spontaneous is licensed under the ISC License.
+Sponntaneous is licensed under the ISC License.
 
 ## Acknowledgments
 
